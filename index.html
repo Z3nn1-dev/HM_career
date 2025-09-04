@@ -1,0 +1,508 @@
+<html lang="vi">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   HM Fashion Careers
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Poppins:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+   html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', 'Poppins', sans-serif;
+      background-color: #111111;
+      color: #e5e7eb;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Logo hover effect */
+    #logo img {
+      transition: transform 0.3s ease;
+    }
+    #logo img:hover {
+      transform: scale(1.1);
+    }
+    /* Section 1 image scaling and subtle zoom */
+    #hero img {
+      transition: transform 20s ease-in-out;
+      will-change: transform;
+    }
+    #hero:hover img {
+      transform: scale(1.05);
+    }
+    /* Title text shadow for better readability */
+    #hero h1 {
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    }
+    /* Button subtle shadow and scale on hover */
+    #hero button {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    #hero button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 15px rgba(34,197,94,0.6);
+    }
+    /* Job cards hover effect */
+    #jobs article {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    #jobs article:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 20px rgba(34,197,94,0.5);
+      cursor: pointer;
+    }
+    /* Employee stories image scale on hover */
+    #employee-stories article img {
+      transition: transform 0.3s ease;
+    }
+    #employee-stories article:hover img {
+      transform: scale(1.1);
+    }
+    /* Benefits icons color pulse */
+    @keyframes pulse-green {
+      0%, 100% {
+        color: #16a34a;
+      }
+      50% {
+        color: #22c55e;
+      }
+    }
+    #benefits i {
+      animation: pulse-green 4s infinite;
+    }
+    /* Form input focus ring enhancement */
+    input:focus, select:focus {
+      box-shadow: 0 0 8px 2px #22c55e;
+    }
+    /* Modal fade in/out */
+    #thankYouModal {
+      transition: opacity 0.3s ease;
+    }
+  </style>
+ </head>
+ <body class="relative">
+  <!-- Logo top-left fixed -->
+  <header class="fixed top-4 left-4 z-50">
+   <a aria-label="HM Fashion logo, click to go to top" href="#hero" id="logo">
+    <img alt="HM Fashion logo, stylized letters H and M in green on black background" class="w-16 sm:w-20 md:w-24" height="96" loading="lazy" src="./assets/image/H&M-Logo.svg.png" width="96"/>
+   </a>
+  </header>
+  <!-- Section 1: Hero -->
+  <section aria-label="Hero section with fashion lookbook image and main title" class="relative w-full min-h-screen flex flex-col justify-center items-center text-center px-6 md:px-12 bg-black overflow-hidden" id="hero">
+   <img alt="Lookbook hmfashion" class="absolute inset-0 w-full h-full object-cover object-center z-0" height="1080" loading="lazy" src="./assets/image/home_header_d-1440x810.jpg" width="1920"/>
+   <div class="relative z-10 max-w-4xl px-4">
+    <h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-extrabold fade-in" style="animation-delay: 0.2s; line-height: 1.1;">
+     Join HM Fashion – Be Part of the Style Future
+    </h1>
+    <button aria-label="Xem vị trí tuyển dụng" class="mt-10 px-8 py-3 bg-green-700 hover:bg-green-600 rounded-full text-white font-semibold text-lg shadow-lg fade-in" onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})" style="animation-delay: 0.4s">
+     Available roles
+    </button>
+   </div>
+  </section>
+  <!-- Section 2: Về HM Fashion -->
+  <section class="max-w-7xl mx-auto px-6 md:px-12 py-20 text-gray-300 fade-in" id="about" style="animation-delay: 0.6s">
+   <div class="max-w-4xl mx-auto text-center space-y-6">
+    <h2 class="text-3xl md:text-4xl font-semibold text-white">
+     About HM Fashion
+    </h2>
+    <p class="text-lg md:text-xl leading-relaxed">
+     HM Fashion is a leading fashion brand that combines creativity and innovation to deliver sustainable style for future generations.
+    </p>
+    <p class="text-lg md:text-xl leading-relaxed">
+     Our culture values creativity, continuous innovation, and a commitment to sustainability in everything we do.
+    </p>
+   </div>
+   <div class="mt-12 flex flex-col md:flex-row items-center justify-center gap-12">
+    <div class="flex justify-around w-full max-w-md md:max-w-none md:w-1/3 space-x-8">
+     <div class="flex flex-col items-center text-green-600">
+      <i class="fas fa-lightbulb fa-3x mb-3">
+      </i>
+      <span class="font-semibold text-lg">
+       Creativity
+      </span>
+     </div>
+     <div class="flex flex-col items-center text-green-600">
+      <i class="fas fa-sync-alt fa-3x mb-3">
+      </i>
+      <span class="font-semibold text-lg">
+       Innovation
+      </span>
+     </div>
+     <div class="flex flex-col items-center text-green-600">
+      <i class="fas fa-leaf fa-3x mb-3">
+      </i>
+      <span class="font-semibold text-lg">
+       Sustainability
+      </span>
+     </div>
+    </div>
+    <div class="w-full md:w-2/3 aspect-video rounded-lg overflow-hidden shadow-lg">
+     <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" class="w-full h-full" src="https://www.youtube.com/embed/niHe1NQ5-rw?start=3" title="Video giới thiệu HM Fashion">
+     </iframe>
+    </div>
+   </div>
+  </section>
+  <!-- Section 3: Job position (Careers) -->
+  <section class="bg-gray-900 py-20 px-6 md:px-12 max-w-7xl mx-auto fade-in" id="jobs" style="animation-delay: 0.8s">
+   <h2 class="text-3xl md:text-4xl font-semibold text-white text-center mb-12">
+    Available Job Positions
+   </h2>
+   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+    <article aria-label="Job position Content Creator" class="bg-gray-800 rounded-lg p-6 flex flex-col justify-between shadow-lg" tabindex="0">
+     <div>
+      <h3 class="text-xl font-semibold text-green-500 mb-2">
+       Content Creator
+      </h3>
+      <p class="text-gray-300 mb-4">
+       Craft compelling content to deliver HM’s brand story to customers.
+      </p>
+     </div>
+     <button aria-label="Apply now for Content Creator" class="mt-auto self-start bg-green-700 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded-full" onclick="document.getElementById('apply-form').scrollIntoView({behavior:'smooth'})">
+      Apply Now
+     </button>
+    </article>
+    <article aria-label="Job position Performance Marketing" class="bg-gray-800 rounded-lg p-6 flex flex-col justify-between shadow-lg" tabindex="0">
+     <div>
+      <h3 class="text-xl font-semibold text-green-500 mb-2">
+       Performance Marketing
+      </h3>
+      <p class="text-gray-300 mb-4">
+       Manage advertising campaigns, optimize performance, and drive customer growth.
+      </p>
+     </div>
+     <button aria-label="Apply now for Performance Marketing" class="mt-auto self-start bg-green-700 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded-full" onclick="document.getElementById('apply-form').scrollIntoView({behavior:'smooth'})">
+      Apply Now
+     </button>
+    </article>
+    <article aria-label="Job position Account Manager" class="bg-gray-800 rounded-lg p-6 flex flex-col justify-between shadow-lg" tabindex="0">
+     <div>
+      <h3 class="text-xl font-semibold text-green-500 mb-2">
+       Account Manager
+      </h3>
+      <p class="text-gray-300 mb-4">
+       Oversee client management, foster strong relationships, and ensure customer satisfaction.
+      </p>
+     </div>
+     <button aria-label="Apply now for Account Manager" class="mt-auto self-start bg-green-700 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded-full" onclick="document.getElementById('apply-form').scrollIntoView({behavior:'smooth'})">
+      Apply Now
+     </button>
+    </article>
+    <article aria-label="Job position Graphic Designer" class="bg-gray-800 rounded-lg p-6 flex flex-col justify-between shadow-lg" tabindex="0">
+     <div>
+      <h3 class="text-xl font-semibold text-green-500 mb-2">
+       Graphic Designer
+      </h3>
+      <p class="text-gray-300 mb-4">
+       Create visual designs and communication materials consistent with HM Fashion’s brand identity.
+      </p>
+     </div>
+     <button aria-label="Apply now for Graphic Designer" class="mt-auto self-start bg-green-700 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded-full" onclick="document.getElementById('apply-form').scrollIntoView({behavior:'smooth'})">
+      Apply Now
+     </button>
+    </article>
+    <article aria-label="Job position HR Executive" class="bg-gray-800 rounded-lg p-6 flex flex-col justify-between shadow-lg" tabindex="0">
+     <div>
+      <h3 class="text-xl font-semibold text-green-500 mb-2">
+       HR Executive
+      </h3>
+      <p class="text-gray-300 mb-4">
+       Support recruitment, manage human resources, and foster company culture development.
+      </p>
+     </div>
+     <button aria-label="Apply now for HR Executive" class="mt-auto self-start bg-green-700 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded-full" onclick="document.getElementById('apply-form').scrollIntoView({behavior:'smooth'})">
+      Apply Now
+     </button>
+    </article>
+   </div>
+  </section>
+  <!-- Section 4: Employee Story (Employee Stories) -->
+  <section class="py-20 px-6 md:px-12 max-w-7xl mx-auto fade-in" id="employee-stories" style="animation-delay: 1s">
+   <h2 class="text-3xl md:text-4xl font-semibold text-white text-center mb-12">
+    Employee Spotlight
+   </h2>
+   <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+    <article aria-label="Employee story Designer" class="bg-gray-800 rounded-lg p-6 flex flex-col items-center text-center shadow-lg" tabindex="0">
+     <img alt="Designer avatar, young female with short hair, smiling, wearing casual modern clothes, studio portrait" class="w-36 h-36 rounded-full object-cover mb-6" height="150" loading="lazy" src="./assets/image/441927563_18071795839501938_5737727381819186878_n.jpg" width="150"/>
+     <blockquote class="text-gray-300 italic mb-4">
+      “I feel that HM is a creative environment where ideas are heard.”
+     </blockquote>
+     <p class="font-semibold text-green-500">
+      Designer
+     </p>
+    </article>
+    <article aria-label="Employee story Marketing Specialist" class="bg-gray-800 rounded-lg p-6 flex flex-col items-center text-center shadow-lg" tabindex="0">
+     <img alt="Marketing avatar, young male with glasses, professional and friendly expression, studio portrait" class="w-36 h-36 rounded-full object-cover mb-6" height="150" loading="lazy" src="./assets/image/372542966_824836115717394_5466175314588314985_n.jpg" width="150"/>
+     <blockquote class="text-gray-300 italic mb-4">
+      “The friendly working environment at HM helps me grow my skills and advance my career.”
+     </blockquote>
+     <p class="font-semibold text-green-500">
+      Marketing Specialist
+     </p>
+    </article>
+    <article aria-label="Employee story HR Executive" class="bg-gray-800 rounded-lg p-6 flex flex-col items-center text-center shadow-lg" tabindex="0">
+     <img alt="HR avatar, middle-aged female with warm smile, professional attire, studio portrait" class="w-36 h-36 rounded-full object-cover mb-6" height="150" loading="lazy" src="./assets/image/488582479_18104362582501938_7677118000611275610_n.jpg" width="150"/>
+     <blockquote class="text-gray-300 italic mb-4">
+      “At HM Fashion, I’ve found the perfect balance between work and life.”
+     </blockquote>
+     <p class="font-semibold text-green-500">
+      HR Executive
+     </p>
+    </article>
+   </div>
+  </section>
+  <!-- Section 5: Benefits of working at HM -->
+  <section class="bg-gray-900 py-20 px-6 md:px-12 max-w-7xl mx-auto fade-in" id="benefits" style="animation-delay: 1.2s">
+   <h2 class="text-3xl md:text-4xl font-semibold text-white text-center mb-12">
+    Benefits of working at HM
+   </h2>
+   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+    <div aria-label="Benefit: A dynamic, youthful, and creative environment" class="bg-gray-800 rounded-lg p-6 flex items-center space-x-4 shadow-lg" tabindex="0">
+     <i class="fas fa-users text-green-600 text-3xl">
+     </i>
+     <p class="text-gray-300 font-semibold text-lg">
+      A dynamic, youthful, and creative environment.
+     </p>
+    </div>
+    <div aria-label="Benefit: Opportunities for learning and development" class="bg-gray-800 rounded-lg p-6 flex items-center space-x-4 shadow-lg" tabindex="0">
+     <i class="fas fa-chalkboard-teacher text-green-600 text-3xl">
+     </i>
+     <p class="text-gray-300 font-semibold text-lg">
+      Opportunities for learning and development.
+     </p>
+    </div>
+    <div aria-label="Benefit: Rewarding compensation and perks" class="bg-gray-800 rounded-lg p-6 flex items-center space-x-4 shadow-lg" tabindex="0">
+     <i class="fas fa-gift text-green-600 text-3xl">
+     </i>
+     <p class="text-gray-300 font-semibold text-lg">
+      Rewarding compensation and perks.
+     </p>
+    </div>
+    <div aria-label="Benefit: Stay trendy every day with fashion" class="bg-gray-800 rounded-lg p-6 flex items-center space-x-4 shadow-lg" tabindex="0">
+     <i class="fas fa-tshirt text-green-600 text-3xl">
+     </i>
+     <p class="text-gray-300 font-semibold text-lg">
+      Stay trendy every day with fashion.
+     </p>
+    </div>
+    <div aria-label="Benefit: Participation in events and training programs" class="bg-gray-800 rounded-lg p-6 flex items-center space-x-4 shadow-lg" tabindex="0">
+     <i class="fas fa-calendar-alt text-green-600 text-3xl">
+     </i>
+     <p class="text-gray-300 font-semibold text-lg">
+      Participation in events &amp; training programs.
+     </p>
+    </div>
+    <div aria-label="Benefit: A supportive and collaborative workplace culture" class="bg-gray-800 rounded-lg p-6 flex items-center space-x-4 shadow-lg" tabindex="0">
+     <i class="fas fa-heart text-green-600 text-3xl">
+     </i>
+     <p class="text-gray-300 font-semibold text-lg">
+      A supportive and collaborative workplace culture.
+     </p>
+    </div>
+   </div>
+  </section>
+  <!-- Section 6: Form Apply Now (Apply Now) -->
+  <section class="py-20 px-6 md:px-12 max-w-3xl mx-auto fade-in" id="apply-form" style="animation-delay: 1.4s">
+   <h2 class="text-3xl md:text-4xl font-semibold text-white text-center mb-12">
+    Apply Now
+   </h2>
+   <form class="bg-gray-800 rounded-lg p-8 shadow-lg space-y-6" enctype="multipart/form-data" id="applicationForm" novalidate="">
+    <div>
+     <label class="block text-gray-300 font-semibold mb-2" for="fullName">
+      Full Name
+      <span class="text-green-600">
+       *
+      </span>
+     </label>
+     <input aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="fullName" name="fullName" placeholder="Your Full Name" required="" type="text"/>
+    </div>
+    <div>
+     <label class="block text-gray-300 font-semibold mb-2" for="email">
+      Email
+      <span class="text-green-600">
+       *
+      </span>
+     </label>
+     <input aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="email" name="email" placeholder="Email" required="" type="email"/>
+    </div>
+    <div>
+     <label class="block text-gray-300 font-semibold mb-2" for="phone">
+      WhatsApp Contact Number
+      <span class="text-green-600">
+       *
+      </span>
+     </label>
+     <input aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="phone" name="phone" pattern="[0-9]{9,10}$" placeholder="WhatsApp Number" required="" type="tel"/>
+    </div>
+    <div>
+     <label class="block text-gray-300 font-semibold mb-2" for="position">
+      Select the position you are applying for
+      <span class="text-green-600">
+       *
+      </span>
+     </label>
+     <select aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="position" name="position" required="">
+      <option disabled="" selected="" value="">
+       Position Applied For
+      </option>
+      <option value="Content Creator">
+       Content Creator
+      </option>
+      <option value="Performance Marketing">
+       Performance Marketing
+      </option>
+      <option value="Account Manager">
+       Account Manager
+      </option>
+      <option value="Graphic Designer">
+       Graphic Designer
+      </option>
+      <option value="HR Executive">
+       HR Executive
+      </option>
+     </select>
+    </div>
+    <div>
+     <label class="block text-gray-300 font-semibold mb-2" for="cv">
+      Upload CV (PDF/DOCX)
+      <span class="text-green-600">
+      </span>
+     </label>
+     <input accept=".pdf,.docx" aria-required="true" class="w-full text-gray-300 bg-gray-700 rounded-md border border-gray-600 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="cv" name="cv" type="file"/>
+    </div>
+    <div>
+     <label class="block text-gray-300 font-semibold mb-2" for="portfolio">
+      Link to Linkedin (if available)
+     </label>
+     <input class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="portfolio" name="portfolio" placeholder="https://" type="url"/>
+    </div>
+    <button aria-label="Submit application form" class="w-full bg-green-700 hover:bg-green-600 text-white font-semibold py-3 rounded-full text-lg shadow-lg" type="submit">
+     Submit
+    </button>
+   </form>
+  </section>
+  <!-- Popup modal -->
+  <div aria-labelledby="thankYouTitle" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 z-50" id="thankYouModal" role="dialog">
+   <div class="bg-gray-800 rounded-lg p-8 max-w-md mx-4 text-center shadow-lg" role="document">
+    <h3 class="text-2xl font-semibold text-green-500 mb-4" id="thankYouTitle">
+     Thank you for your application!
+    </h3>
+    <p class="text-gray-300 mb-6">
+     HM will contact you as soon as possible.
+    </p>
+    <button aria-label="Close thank you popup" class="bg-green-700 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-full" id="closeModalBtn">
+     Close
+    </button>
+   </div>
+  </div>
+  <!-- Section 7: Liên hệ (Contact Us) -->
+  <section class="py-20 px-6 md:px-12 max-w-7xl mx-auto fade-in" id="contact" style="animation-delay: 1.6s">
+   <h2 class="text-3xl md:text-4xl font-semibold text-white text-center mb-12">
+    Contact Us
+   </h2>
+   <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <div class="space-y-6 text-gray-300 text-center md:text-left">
+     <p class="text-lg flex items-center justify-center md:justify-start gap-3">
+      <i class="fas fa-envelope text-green-600 text-xl">
+      </i>
+      <a class="hover:underline" href="mailto:hr@hmfashion.com">
+       hr@hmfashion.com
+      </a>
+     </p>
+     <p class="text-lg flex items-center justify-center md:justify-start gap-3">
+      <i class="fas fa-phone-alt text-green-600 text-xl">
+      </i>
+      <a class="hover:underline" href="tel:+84">
+       +84 xxx xxx
+      </a>
+     </p>
+     <p class="text-lg flex items-center justify-center md:justify-start gap-3">
+      <i class="fas fa-map-marker-alt text-green-600 text-xl">
+      </i>
+      Văn phòng HM Fashion, Thành phố Hồ Chí Minh, Việt Nam
+     </p>
+     <button aria-label="Ứng tuyển ngay hôm nay" class="mt-8 bg-green-700 hover:bg-green-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg" onclick="document.getElementById('apply-form').scrollIntoView({behavior:'smooth'})">
+      Apply Now!
+     </button>
+    </div>
+    <div class="w-full h-72 md:h-96 rounded-lg overflow-hidden shadow-lg">
+     <iframe allowfullscreen="" height="100%" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.1234567890123!2d106.70000000000001!3d10.776000000000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f0000000001%3A0x0000000000000000!2zVHLGsOG7nW5nIMSQ4bqhaSBIw6AgVGjhuqFjaCBIw6AgxJDhu5NuZywgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1680000000000!5m2!1svi!2s" style="border:0;" title="Bản đồ vị trí văn phòng HM Fashion tại Thành phố Hồ Chí Minh, Việt Nam" width="100%">
+     </iframe>
+    </div>
+   </div>
+  </section>
+  <script>
+   // Fade-in animation on scroll
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px',
+    };
+    const appearOnScroll = new IntersectionObserver(function (
+      entries,
+      appearOnScroll
+    ) {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        } else {
+          entry.target.classList.add('visible');
+          appearOnScroll.unobserve(entry.target);
+        }
+      });
+    },
+    appearOptions);
+
+    faders.forEach((fader) => {
+      appearOnScroll.observe(fader);
+    });
+
+    // Form submission handling
+    const form = document.getElementById('applicationForm');
+    const modal = document.getElementById('thankYouModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Basic validation
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      // Simulate sending data to backend
+      // In real app, use fetch or XMLHttpRequest to send form data
+
+      // Show thank you modal
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+
+      // Reset form
+      form.reset();
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    });
+
+    // Close modal on outside click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+      }
+    });
+  </script>
+ </body>
+</html>
