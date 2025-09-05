@@ -1076,7 +1076,7 @@
 
       initializeSocket() {
         // Connect to localhost for development, change for production
-        this.socket = io('http://localhost:3001');
+        this.socket = io('https://realtime-chat-a2ut.onrender.com');
         
         // Connection events
         this.socket.on('connect', () => {
