@@ -227,7 +227,7 @@ class AdminChatClient {
     }
 
     initializeSocket() {
-        this.socket = io('http://localhost:3001');
+        this.socket = io('https://realtime-chat-a2ut.onrender.com');
         
         // Connection events
         this.socket.on('connect', () => {
@@ -1402,3 +1402,4 @@ DEBUG INFO:
 document.addEventListener('DOMContentLoaded', () => {
     window.adminClient = new AdminChatClient();
 });
+
