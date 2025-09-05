@@ -8,9 +8,18 @@ class LiveChatClient {
         this.typingTimer = null;
         this.isTyping = false;
         
+        // Configuration
+        this.autoOpen = true; // Set to false to disable auto-open
+        this.autoOpenDelay = 1000; // Delay in milliseconds
+        
         this.initializeElements();
         this.attachEventListeners();
         this.initializeSocket();
+        
+        // Auto-open chat popup after page loads
+        if (this.autoOpen) {
+            this.autoOpenChat();
+        }
     }
 
     initializeElements() {
@@ -138,6 +147,40 @@ class LiveChatClient {
         this.socket.on('error', (data) => {
             this.showSystemMessage(`Error: ${data.message}`);
         });
+    }
+
+    autoOpenChat() {
+        // Auto-open the chat popup after a short delay to ensure page is loaded
+        setTimeout(() => {
+            this.openChat();
+            
+            // Optional: Show a welcome message
+            setTimeout(() => {
+                this.showWelcomeMessage();
+            }, 500);
+        }, this.autoOpenDelay); // Use configurable delay
+    }
+
+    showWelcomeMessage() {
+        // Create a welcome message element
+        const welcomeMsg = document.createElement('div');
+        welcomeMsg.className = 'system-message welcome-message';
+        welcomeMsg.innerHTML = `
+            <strong>👋 Welcome!</strong><br>
+            Need help? Enter your name below to start chatting with our support team.
+        `;
+        welcomeMsg.style.cssText = `
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        `;
+        
+        this.messagesList.appendChild(welcomeMsg);
+        this.scrollToBottom();
     }
 
     toggleChat() {
@@ -329,4 +372,3 @@ class LiveChatClient {
 document.addEventListener('DOMContentLoaded', () => {
     window.chatClient = new LiveChatClient();
 });
-
