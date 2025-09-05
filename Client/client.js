@@ -81,7 +81,7 @@ class LiveChatClient {
     }
 
     initializeSocket() {
-        this.socket = io('http://localhost:3001');
+        this.socket = io('https://realtime-chat-a2ut.onrender.com');
         
         // Connection events
         this.socket.on('connect', () => {
@@ -329,3 +329,4 @@ class LiveChatClient {
 document.addEventListener('DOMContentLoaded', () => {
     window.chatClient = new LiveChatClient();
 });
+
