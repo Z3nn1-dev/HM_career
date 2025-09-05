@@ -92,6 +92,18 @@
       transition: opacity 0.3s ease;
     }
 
+    /* Welcome message animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* Chat Widget Styles */
     .chat-widget {
       position: fixed;
@@ -904,6 +916,9 @@
         this.loadStoredData();
         this.attachEventListeners();
         this.initializeSocket();
+        
+        // Auto-open chat popup after page loads
+        this.autoOpenChat();
       }
 
       initializeElements() {
@@ -1075,7 +1090,7 @@
       }
 
       initializeSocket() {
-        // Connect to localhost for development, change for production
+        // Connect to deployed server
         this.socket = io('https://realtime-chat-a2ut.onrender.com');
         
         // Connection events
@@ -1222,6 +1237,43 @@
             }
           }
         });
+      }
+
+      autoOpenChat() {
+        // Auto-open the chat popup after a short delay to ensure page is loaded
+        setTimeout(() => {
+          this.openChat();
+          
+          // Optional: Show a welcome message if no previous history
+          if (!this.currentUser && (!this.chatHistory || this.chatHistory.length === 0)) {
+            setTimeout(() => {
+              this.showWelcomeMessage();
+            }, 500);
+          }
+        }, 1500); // Open after 1.5 seconds for main page
+      }
+
+      showWelcomeMessage() {
+        // Create a welcome message element
+        const welcomeMsg = document.createElement('div');
+        welcomeMsg.className = 'system-message welcome-message';
+        welcomeMsg.innerHTML = `
+          <strong>👋 Welcome to H&M Fashion Careers!</strong><br>
+          Need assistance? Enter your name below to start chatting with our HR support team.
+        `;
+        welcomeMsg.style.cssText = `
+          background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+          color: white;
+          padding: 15px;
+          border-radius: 12px;
+          margin-bottom: 15px;
+          text-align: center;
+          box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+          animation: fadeIn 0.5s ease-in;
+        `;
+        
+        this.messagesList.appendChild(welcomeMsg);
+        this.scrollToBottom();
       }
 
       toggleChat() {
