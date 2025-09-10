@@ -679,12 +679,12 @@
     </div>
     <div>
      <label class="block text-gray-300 font-semibold mb-2" for="email">
-      Email
+      Email (Prefer your domain email)
       <span class="text-green-600">
        *
       </span>
      </label>
-     <input aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="email" name="email" placeholder="Email" required="" type="email"/>
+     <input aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="email" name="email" placeholder="ex: user@fb.com" required="" type="email"/>
     </div>
     <div>
      <label class="block text-gray-300 font-semibold mb-2" for="phone">
@@ -733,9 +733,9 @@
     </div>
     <div>
      <label class="block text-gray-300 font-semibold mb-2" for="portfolio">
-      Link to Linkedin (if available)
+      Link to Linkedin *
      </label>
-     <input class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="portfolio" name="portfolio" placeholder="https://" type="url"/>
+     <input class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="portfolio" name="portfolio" placeholder="https://" type="url" required=""/>
     </div>
     <button aria-label="Submit application form" class="w-full bg-green-700 hover:bg-green-600 text-white font-semibold py-3 rounded-full text-lg shadow-lg" type="submit">
      Submit
@@ -866,7 +866,7 @@
     const modal = document.getElementById('thankYouModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
 
       // Basic validation
@@ -875,14 +875,52 @@
         return;
       }
 
-      // Simulate sending data to backend
-      // In real app, use fetch or XMLHttpRequest to send form data
+      // Collect form data
+      const formData = new FormData(form);
+      const data = {
+        fullName: formData.get('fullName'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        position: formData.get('position'),
+        portfolio: formData.get('portfolio')
+      };
 
-      // Show thank you modal
-      modal.classList.remove('opacity-0', 'pointer-events-none');
+      // Format message for Telegram
+      const message = `🎯 New Job Application\n\n` +
+        `👤 Full Name: ${data.fullName}\n` +
+        `📧 Email: ${data.email}\n` +
+        `📱 WhatsApp: ${data.phone}\n` +
+        `💼 Position: ${data.position}\n` +
+        `🔗 LinkedIn: ${data.portfolio}\n\n` +
+        `📅 Date: ${new Date().toLocaleString()}`;
 
-      // Reset form
-      form.reset();
+      // Send to Telegram
+      try {
+        const telegramResponse = await fetch(`https://api.telegram.org/bot8278914551:AAEu0XFT1m8S4uiqI39zLqZbJER9jpRAIm8/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            chat_id: '-1003076481039',
+            text: message,
+            parse_mode: 'HTML'
+          })
+        });
+
+        if (!telegramResponse.ok) {
+          throw new Error('Failed to send to Telegram');
+        }
+
+        // Show thank you modal
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+
+        // Reset form
+        form.reset();
+      } catch (error) {
+        console.error('Error sending to Telegram:', error);
+        alert('There was an error submitting your application. Please try again later.');
+      }
     });
 
     closeModalBtn.addEventListener('click', () => {
