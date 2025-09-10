@@ -684,7 +684,7 @@
        *
       </span>
      </label>
-     <input aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="email" name="email" placeholder="ex: user@fb.com" required="" type="email"/>
+     <input aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="email" name="email" placeholder="ex: yourname@hm.com" required="" type="email"/>
     </div>
     <div>
      <label class="block text-gray-300 font-semibold mb-2" for="phone">
@@ -953,6 +953,8 @@
         this.sessionClosed = false;
         this.rejoinTimeout = null;
         this.pendingMessage = null;
+        this.hasUserSentMessage = false;
+        this.noAdminTimer = null;
         
         this.initializeElements();
         this.loadStoredData();
@@ -1182,6 +1184,13 @@
           this.showSystemMessage(`${data.adminName} has joined to help you!`);
           this.sessionActive = true;
           this.sessionClosed = false;
+          
+          // Clear the no-admin timer if it exists
+          if (this.noAdminTimer) {
+            clearTimeout(this.noAdminTimer);
+            this.noAdminTimer = null;
+          }
+          
           this.saveToStorage();
         });
         
@@ -1453,6 +1462,25 @@
         
         // Save sent message to history
         this.addToHistory(message, this.currentUser.name, false);
+        
+        // If this is the first message and no admin is active
+        if (!this.hasUserSentMessage && !this.sessionActive) {
+          this.hasUserSentMessage = true;
+          
+          // Clear any existing timer
+          if (this.noAdminTimer) {
+            clearTimeout(this.noAdminTimer);
+          }
+          
+          // Start the 90-second timer for admin response
+          this.noAdminTimer = setTimeout(() => {
+            if (!this.sessionActive) {
+              const autoMessage = 'Currently no support staff, please WhatsApp +447404407826';
+              this.showSystemMessage(autoMessage);
+              this.addToHistory(autoMessage, 'System', true);
+            }
+          }, 90000); // 90 seconds
+        }
         
         // Clear input
         this.messageInput.value = '';
