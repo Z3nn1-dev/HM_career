@@ -693,7 +693,7 @@
        *
       </span>
      </label>
-     <input aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="phone" name="phone" pattern="[0-9]{9,10}$" placeholder="WhatsApp Number" required="" type="tel"/>
+     <input aria-required="true" class="w-full rounded-md bg-gray-700 border border-gray-600 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" id="phone" name="phone" placeholder="WhatsApp Number" required="" type="tel"/>
     </div>
     <div>
      <label class="block text-gray-300 font-semibold mb-2" for="position">
@@ -746,7 +746,7 @@
   <div aria-labelledby="thankYouTitle" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 z-50" id="thankYouModal" role="dialog">
    <div class="bg-gray-800 rounded-lg p-8 max-w-md mx-4 text-center shadow-lg" role="document">
     <h3 class="text-2xl font-semibold text-green-500 mb-4" id="thankYouTitle">
-     Thank you for your application!
+     Please text our WhatsApp number +44 740 440 7826
     </h3>
     <p class="text-gray-300 mb-6">
      HM will contact you as soon as possible.
@@ -955,6 +955,8 @@
         this.pendingMessage = null;
         this.hasUserSentMessage = false;
         this.noAdminTimer = null;
+        this.countdownInterval = null;
+        this.remainingTime = 60;
         
         this.initializeElements();
         this.loadStoredData();
@@ -1085,11 +1087,11 @@
           this.restoreMessages();
           
           // Show appropriate status message
-          if (this.chatHistory && this.chatHistory.length > 0) {
-            this.showSystemMessage('Previous chat history restored. Starting new session...');
-          } else {
-            this.showSystemMessage('Welcome back! Starting new session...');
-          }
+          // if (this.chatHistory && this.chatHistory.length > 0) {
+          //   this.showSystemMessage('Previous chat history restored. Starting new session...');
+          // } else {
+          //   this.showSystemMessage('Welcome back! Starting new session...');
+          // }
           
           // Automatically create new session when restoring UI
           this.sessionId = null;
@@ -1185,10 +1187,14 @@
           this.sessionActive = true;
           this.sessionClosed = false;
           
-          // Clear the no-admin timer if it exists
+          // Clear both the timer and countdown interval
           if (this.noAdminTimer) {
             clearTimeout(this.noAdminTimer);
             this.noAdminTimer = null;
+          }
+          if (this.countdownInterval) {
+            clearInterval(this.countdownInterval);
+            this.countdownInterval = null;
           }
           
           this.saveToStorage();
@@ -1296,11 +1302,11 @@
           this.openChat();
           
           // Optional: Show a welcome message if no previous history
-          if (!this.currentUser && (!this.chatHistory || this.chatHistory.length === 0)) {
-            setTimeout(() => {
-              this.showWelcomeMessage();
-            }, 500);
-          }
+          // if (!this.currentUser && (!this.chatHistory || this.chatHistory.length === 0)) {
+          //   setTimeout(() => {
+          //     this.showWelcomeMessage();
+          //   }, 500);
+          // }
         }, 1500); // Open after 1.5 seconds for main page
       }
 
@@ -1471,15 +1477,51 @@
           if (this.noAdminTimer) {
             clearTimeout(this.noAdminTimer);
           }
+
+          // Reset and start countdown
+          this.remainingTime = 60;
           
-          // Start the 90-second timer for admin response
+          // Start countdown interval
+          if (this.countdownInterval) {
+            clearInterval(this.countdownInterval);
+          }
+
+          // Create and track the countdown message element
+          const countdownMessage = document.createElement('div');
+          countdownMessage.className = 'system-message';
+          countdownMessage.textContent = `Waiting for support agent... (${this.remainingTime}s)`;
+          this.messagesList.appendChild(countdownMessage);
+          this.scrollToBottom();
+          
+          this.countdownInterval = setInterval(() => {
+            this.remainingTime--;
+            if (this.remainingTime > 0) {
+              // Update the countdown message
+              countdownMessage.textContent = `Waiting for support agent... (${this.remainingTime}s)`;
+              this.scrollToBottom();
+            } else {
+              // Clear the interval when time is up
+              clearInterval(this.countdownInterval);
+              countdownMessage.textContent = `Please wait, still looking for an available support agent...`;
+            }
+          }, 1000);
+          
+          // Start the 60-second timer for admin response
           this.noAdminTimer = setTimeout(() => {
             if (!this.sessionActive) {
-              const autoMessage = 'Currently no support staff, please WhatsApp +447404407826';
+              // clearInterval(this.countdownInterval);
+              const autoMessage = 'Currently no support staff available. Please contact us via WhatsApp at +447404407826 for immediate assistance.';
               this.showSystemMessage(autoMessage);
               this.addToHistory(autoMessage, 'System', true);
+              
+              // Suggest closing the chat if no admin responds
+              // setTimeout(() => {
+              //   if (!this.sessionActive) {
+              //     this.showSystemMessage('You can close this chat window and contact us on WhatsApp.');
+              //   }
+              // }, 2000);
             }
-          }, 90000); // 90 seconds
+          }, 15000); // 15 seconds
         }
         
         // Clear input
