@@ -957,6 +957,34 @@
         this.noAdminTimer = null;
         this.countdownInterval = null;
         this.remainingTime = 60;
+        this.aiResponding = false;
+
+        // AI Bot response patterns
+        this.aiResponses = {
+          greetings: {
+            patterns: ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening'],
+            response: "Hello! 👋 I'm HM's AI assistant. I can help you with questions about job positions, applications, and our company. How can I assist you today?"
+          },
+          positions: {
+            patterns: ['position', 'job', 'role', 'vacancy', 'opening', 'hiring', 'work'],
+            response: "We have several exciting positions available including:\n• Content Creator\n• Performance Marketing\n• Account Manager\n• Graphic Designer\n• HR Executive\n\nWhich position interests you? I can provide more details about any role."
+          },
+          application: {
+            patterns: ['apply', 'cv', 'resume', 'application', 'submit', 'portfolio'],
+            response: "To apply, please:\n1. Go to our application form\n2. Fill in your details\n3. Upload your CV (PDF/DOCX)\n4. Include your LinkedIn profile\n\nMake sure to highlight relevant experience for the position you're interested in!"
+          },
+          benefits: {
+            patterns: ['benefit', 'perks', 'salary', 'compensation', 'package'],
+            response: "At HM Fashion, we offer great benefits including:\n• Dynamic work environment\n• Learning & development opportunities\n• Competitive compensation\n• Fashion industry exposure\n• Regular events & training\n• Collaborative culture"
+          },
+          contact: {
+            patterns: ['contact', 'phone', 'email', 'reach', 'whatsapp'],
+            response: "You can reach us through:\n• WhatsApp: +44 740 440 7826\n• Address: H&M UK Ltd, Oxford St, London"
+          },
+          default: {
+            response: "I understand you have a question. While I'm checking with our HR team, you can:\n1. Browse our job listings\n2. Review position requirements\n3. Prepare your application\n\nA human team member will join shortly to provide more specific assistance. You can reach us through\n WhatsApp: +44 740 440 7826."
+          }
+        };
         
         this.initializeElements();
         this.loadStoredData();
@@ -1431,6 +1459,35 @@
         this.messageInput.focus();
       }
 
+      getAIResponse(message) {
+        const lowercaseMessage = message.toLowerCase();
+        
+        // Check each response category
+        for (const category in this.aiResponses) {
+          if (category === 'default') continue;
+          
+          const patterns = this.aiResponses[category].patterns;
+          if (patterns && patterns.some(pattern => lowercaseMessage.includes(pattern))) {
+            return this.aiResponses[category].response;
+          }
+        }
+        
+        return this.aiResponses.default.response;
+      }
+
+      async simulateAITyping() {
+        this.aiResponding = true;
+        const typingData = { user: 'AI Assistant', isTyping: true };
+        this.showTypingIndicator(typingData);
+        
+        // Simulate AI thinking and typing (1-2 seconds)
+        await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+        
+        typingData.isTyping = false;
+        this.showTypingIndicator(typingData);
+        this.aiResponding = false;
+      }
+
       sendMessage() {
         const message = this.messageInput.value.trim();
         
@@ -1440,6 +1497,11 @@
         
         if (message.length > 500) {
           alert('Message must be 500 characters or less');
+          return;
+        }
+
+        // Prevent sending new message while AI is responding
+        if (this.aiResponding) {
           return;
         }
 
@@ -1468,6 +1530,26 @@
         
         // Save sent message to history
         this.addToHistory(message, this.currentUser.name, false);
+
+        // If no admin is active, generate AI response
+        if (!this.sessionActive) {
+          // Get AI response
+          const aiResponse = this.getAIResponse(message);
+          
+          // Simulate AI typing
+          this.simulateAITyping().then(() => {
+            // Display AI response
+            const aiMessage = {
+              message: aiResponse,
+              user: 'AI Assistant',
+              timestamp: Date.now(),
+              isAdmin: true,
+              isAI: true
+            };
+            this.displayMessage(aiMessage);
+            this.addToHistory(aiResponse, 'AI Assistant', false);
+          });
+        }
         
         // If this is the first message and no admin is active
         if (!this.hasUserSentMessage && !this.sessionActive) {
@@ -1531,7 +1613,7 @@
 
       displayMessage(content, sender = null, isSystem = false) {
         // Handle both new message format and restored message format
-        let messageText, messageSender, messageTimestamp, messageIsAdmin;
+        let messageText, messageSender, messageTimestamp, messageIsAdmin, messageIsAI;
         
         if (typeof content === 'object' && content.message) {
           // New message from server
@@ -1539,12 +1621,14 @@
           messageSender = content.user;
           messageTimestamp = content.timestamp;
           messageIsAdmin = content.isAdmin;
+          messageIsAI = content.isAI || false;
         } else {
           // Restored message from history or system message
           messageText = content;
           messageSender = sender || 'System';
           messageTimestamp = Date.now();
           messageIsAdmin = false;
+          messageIsAI = false;
         }
         
         if (isSystem) {
@@ -1569,6 +1653,10 @@
         
         if (messageIsAdmin) {
           messageElement.classList.add('admin');
+        }
+
+        if (messageIsAI) {
+          messageElement.classList.add('ai');
         }
         
         const bubble = document.createElement('div');
@@ -1614,6 +1702,18 @@
           this.socket.emit('typing', { isTyping: false });
         }
         clearTimeout(this.typingTimer);
+      }
+
+      // Simulate AI typing effect
+      simulateAITyping() {
+        return new Promise(resolve => {
+          this.showTypingIndicator({ user: 'AI Assistant' });
+          // Fixed 5 second delay for AI responses
+          setTimeout(() => {
+            document.querySelector('.typing-indicator')?.remove();
+            resolve();
+          }, 5000); // 5 seconds delay
+        });
       }
 
       showTypingIndicator(data) {
